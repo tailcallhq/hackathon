@@ -1,0 +1,9 @@
+.vscode
+
+/target
+node_modules
+
+.direnv
+.envrc
+
+*.snap.new

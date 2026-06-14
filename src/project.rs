@@ -9,7 +9,7 @@ use tracing::{error, info, instrument};
 use crate::{
     benchmarks::run_benchmarks,
     command::{Command, CommandInstance},
-    graphql_tests::run_graphql_tests,
+    graphql_tests::{run_graphql_tests, run_introspection_query},
     request::{REFERENCE_GRAPHQL_CLIENT, TESTED_GRAPHQL_CLIENT},
     utils::env_default,
     ROOT_DIR,
@@ -52,6 +52,8 @@ impl Project {
         let mock_server = self.run_mock_server().await?;
         let reference_server = self.run_reference_server().await?;
         let server = self.run_server().await?;
+
+        run_introspection_query().await?;
 
         run_graphql_tests().await?;
         run_benchmarks(&Path::new(ROOT_DIR).join(format!("results/{}", self.name()))).await?;
